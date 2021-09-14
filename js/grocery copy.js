@@ -174,53 +174,37 @@ var products = [
   
   // Exercise 6
   function generateCart() {
-    let cartItem = {
-        name: '',
+    // Using the "cartlist" array that contains all the items in the shopping cart,
+    // generate the "cart" array that does not contain repeated items, instead each item of this array "cart" shows the quantity of product.
+    // inicialitzem cartItem
+
+    let cartItem =  {
+        name: "",
         price: 0,
-        type: '',
-        quantity: 0,
+        type: "",
+        quantity: 1,
     }
-    let counter = 0;
-    //iterar array cartList
+
     for (let i=0; i<cartList.length; i++){
-      //transformem cartList[i] en cartItem, que actualitza el primer cartItem.
-      cartItem = {
-          ...cartItem,
-          name: cartList[i].name,
-          price: cartList[i].price,
-          type: cartList[i].type,
-          quantity: counter,
-      }  
-      debugger;
-      if (cart.some((item) => item.name === cartItem.name)){
-          //increment quantity by 1
-          cartItem={
-              ...cartItem,
-              quantity: counter + 1,
-          }
-          debugger;
-         //find index of cartItem in cart
-         const index = cart.findIndex((item) => item.name === cartItem.name)
-         //replace cartItem with splice
-         debugger;
-          cart.splice(index,1,cartItem)
-          
-          console.log(cart)
-    } else {
-        //afegim el cartItem a l'Array cart
-        cartItem={
-            ...cartItem,
-            quantity: 1,
+        //definim cartItem
+        
+        cartItem = {
+            ... cartItem,
+            name: cartList[i].name,
+            price: cartList[i].price,
+            type: cartList[i].type,
         }
-        cart.push(cartItem)
-        console.log("afegit")
+        //existe en el array cart ? 
+        
+        if (cart.some((item) => item.name === cartItem.name)){
+            //update la cantidad en ese item, con quantity +1;
+            console.log("this is the cart item =>", cartItem)
+        } else {
+            //afegim el cartItem a l'Array cart
+            cart.push(cartItem)
+            console.log("afegit=>", cartItem)
+        }
     }
-     
-    }
-    console.log("cart=>", cart);
-    //Si cartList[0] existeix a cart, incrementem el camp quantity
-    //Si cartList[0] no existeix a cart, l'agreguem a cart - pero primer fem update quantity:1
-       
   }
   
   // Exercise 7

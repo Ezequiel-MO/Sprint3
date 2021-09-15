@@ -1,246 +1,292 @@
 // Exercise 11
 // Move this variable to a json file and load the data in this js
 var products = [
-    {
-      name: "cooking oil",
-      price: 10.5,
-      type: "grocery",
-    },
-    {
-      name: "Pasta",
-      price: 6.25,
-      type: "grocery",
-    },
-    {
-      name: "Instant cupcake mixture",
-      price: 5,
-      type: "grocery",
-    },
-    {
-      name: "All-in-one",
-      price: 260,
-      type: "beauty",
-    },
-    {
-      name: "Zero Make-up Kit",
-      price: 20.5,
-      type: "beauty",
-    },
-    {
-      name: "Lip Tints",
-      price: 12.75,
-      type: "beauty",
-    },
-    {
-      name: "Lawn Dress",
-      price: 15,
-      type: "clothes",
-    },
-    {
-      name: "Lawn-Chiffon Combo",
-      price: 19.99,
-      type: "clothes",
-    },
-    {
-      name: "Toddler Frock",
-      price: 9.99,
-      type: "clothes",
-    },
-  ];
-  var cartList = [];
-  var cart = [];
-  var subtotal = {
-    grocery: {
-      value: 0,
-      discount: 0,
-    },
-    beauty: {
-      value: 0,
-      discount: 0,
-    },
-    clothes: {
-      value: 0,
-      discount: 0,
-    },
-  };
-  var total = 0;
-  
-  // Exercise 1
-  function addToCartList(id) {
-    // 1. Loop for to the array products to get the item to add to cart
-    let item;
+  {
+    name: "cooking oil",
+    price: 10.5,
+    type: "grocery",
+  },
+  {
+    name: "Pasta",
+    price: 6.25,
+    type: "grocery",
+  },
+  {
+    name: "Instant cupcake mixture",
+    price: 5,
+    type: "grocery",
+  },
+  {
+    name: "All-in-one",
+    price: 260,
+    type: "beauty",
+  },
+  {
+    name: "Zero Make-up Kit",
+    price: 20.5,
+    type: "beauty",
+  },
+  {
+    name: "Lip Tints",
+    price: 12.75,
+    type: "beauty",
+  },
+  {
+    name: "Lawn Dress",
+    price: 15,
+    type: "clothes",
+  },
+  {
+    name: "Lawn-Chiffon Combo",
+    price: 19.99,
+    type: "clothes",
+  },
+  {
+    name: "Toddler Frock",
+    price: 9.99,
+    type: "clothes",
+  },
+];
+var cartList = [];
+var cart = [];
+var subtotal = {
+  grocery: {
+    value: 0,
+    discount: 0,
+  },
+  beauty: {
+    value: 0,
+    discount: 0,
+  },
+  clothes: {
+    value: 0,
+    discount: 0,
+  },
+};
+var total = 0;
+
+// Exercise 1
+function addToCartList(id) {
+  // 1. Loop for to the array products to get the item to add to cart
+  let item;
+  for (let i = 0; i < products.length; i++) {
+    if (i + 1 === id) {
+      item = products[i];
+      cartList.push(item);
+    }
+  }
+  // 2. Add found product to the cartList array
+  console.log("this is the cartList =>", cartList);
+  return cartList;
+}
+
+// Exercise 2
+
+function cleanSubTotal() {
+  for (let [key, value] of Object.entries(subtotal)) {
+    value.value = 0;
+  }
+  return subtotal;
+}
+
+function cleanDiscounts() {
+  for (let [key, value] of Object.entries(subtotal)) {
+    value.discount = 0;
+  }
+  return subtotal;
+}
+
+function cleanCart() {
+  cartList.length = 0;
+  cleanSubTotal();
+  cleanDiscounts();
+  console.log("this is the empty cartList =>", cartList);
+  return cartList;
+}
+
+// Exercise 3
+function calculateSubtotals() {
+  cleanSubTotal();
+  // 1. Create a for loop on the "cartList" array
+  for (let i = 0; i < cartList.length; i++) {
+    // 2. Implement inside the loop an if...else or switch...case to add the quantities of each type of product, obtaining the subtotals: subtotalGrocery, subtotalBeauty and subtotalClothes
+    if (cartList[i].type === "grocery") {
+      subtotal.grocery.value += cartList[i].price;
+    } else if (cartList[i].type === "beauty") {
+      subtotal.beauty.value += cartList[i].price;
+    } else if (cartList[i].type === "clothes") {
+      subtotal.clothes.value += cartList[i].price;
+    } else return;
+  }
+  applyPromotionsSubtotals();
+  console.log("this is the subtotal =>", subtotal);
+  return subtotal;
+}
+
+// Exercise 4
+function calculateTotal() {
+  total = 0;
+  // Calculate total price of the cart either using the "cartList" array
+  for (let i = 0; i < cartList.length; i++) {
+    total += cartList[i].price;
+  }
+  let totalDiscount = 0;
+  for (key in subtotal) {
+    totalDiscount += subtotal[key].discount;
+    console.log("total discountzz =>", totalDiscount);
+  }
+  total = total - totalDiscount;
+  console.log("this is the total =>", total);
+  return total;
+}
+
+// Exercise 5
+function applyPromotionsSubtotals() {
+  let oilCounter = 0;
+  let cupcakeCounter = 0;
+  for (let i = 0; i < cartList.length; i++) {
+    if (cartList[i].name === "cooking oil") {
+      oilCounter++;
+    } else if (cartList[i].name === "Instant cupcake mixture") {
+      cupcakeCounter++;
+    }
+  }
+  if (oilCounter >= 3) {
+    subtotal["grocery"].discount += oilCounter * 0.5;
+    console.log("discount oil=>", oilCounter * 0.5);
+  }
+
+  if (cupcakeCounter >= 10) {
+    let cupcakePrice = 0;
     for (let i = 0; i < products.length; i++) {
-      if (i + 1 === id) {
-        item = products[i];
-        cartList.push(item);
+      if (products[i].name === "Instant cupcake mixture") {
+        cupcakePrice = products[i].price;
       }
     }
-    // 2. Add found product to the cartList array
-    console.log("this is the cartList =>", cartList);
-    return cartList;
+    subtotal["grocery"].discount += Math.round(
+      cupcakeCounter * (cupcakePrice / 3)
+    ).toFixed(2);
   }
-  
-  // Exercise 2
-  
-  function cleanSubTotal() {
-    for (let [key, value] of Object.entries(subtotal)) {
-      value.value = 0;
+
+  console.log("subtotal with discount =>", subtotal);
+  return subtotal;
+}
+
+// Exercise 6
+function generateCart() {
+  let cartItem = {};
+  let quantityCounter = 1;
+  let index;
+  for (let i = 0; i < cartList.length; i++) {
+    if (cart.some((item) => item.name === cartList[i].name)) {
+      quantityCounter++;
+
+      index = cart.findIndex((item) => item.name === cartList[i].name);
+      cart[index].quantity = quantityCounter;
+    } else {
+      quantityCounter = 1;
+      cartItem = { ...cartList[i], quantity: quantityCounter };
+      cart.push(cartItem);
     }
-    return subtotal;
+    console.log(quantityCounter);
   }
-  
-  function cleanDiscounts() {
-    for (let [key, value] of Object.entries(subtotal)) {
-      value.discount = 0;
-    }
-    return subtotal;
-  }
-  
-  function cleanCart() {
-    cartList.length = 0;
-    cleanSubTotal();
-    cleanDiscounts();
-    console.log("this is the empty cartList =>", cartList);
-    return cartList;
-  }
-  
-  // Exercise 3
-  function calculateSubtotals() {
-    cleanSubTotal();
-    // 1. Create a for loop on the "cartList" array
-    for (let i = 0; i < cartList.length; i++) {
-      // 2. Implement inside the loop an if...else or switch...case to add the quantities of each type of product, obtaining the subtotals: subtotalGrocery, subtotalBeauty and subtotalClothes
-      if (cartList[i].type === "grocery") {
-        subtotal.grocery.value += cartList[i].price;
-      } else if (cartList[i].type === "beauty") {
-        subtotal.beauty.value += cartList[i].price;
-      } else if (cartList[i].type === "clothes") {
-        subtotal.clothes.value += cartList[i].price;
-      } else return;
-    }
-    applyPromotionsSubtotals();
-    console.log("this is the subtotal =>", subtotal);
-    return subtotal;
-  }
-  
-  // Exercise 4
-  function calculateTotal() {
-    total = 0;
-    // Calculate total price of the cart either using the "cartList" array
-    for (let i = 0; i < cartList.length; i++) {
-      total += cartList[i].price;
-    }
-    let totalDiscount = 0;
-    for (key in subtotal) {
-      totalDiscount += subtotal[key].discount;
-      console.log("total discountzz =>", totalDiscount);
-    }
-    total = total - totalDiscount;
-    console.log("this is the total =>", total);
-    return total;
-  }
-  
-  // Exercise 5
-  function applyPromotionsSubtotals() {
-    let oilCounter = 0;
-    let cupcakeCounter = 0;
-    for (let i = 0; i < cartList.length; i++) {
-      if (cartList[i].name === "cooking oil") {
-        oilCounter++;
-      } else if (cartList[i].name === "Instant cupcake mixture") {
-        cupcakeCounter++;
-      }
-    }
-    if (oilCounter >= 3) {
-      subtotal["grocery"].discount += oilCounter * 0.5;
-      console.log("discount oil=>", oilCounter * 0.5);
-    }
-  
-    if (cupcakeCounter >= 10) {
-      let cupcakePrice = 0;
-      for (let i = 0; i < products.length; i++) {
-        if (products[i].name === "Instant cupcake mixture") {
-          cupcakePrice = products[i].price;
-        }
-      }
-      subtotal["grocery"].discount += Math.round(
-        cupcakeCounter * (cupcakePrice / 3)
+  applyPromotionsCart();
+  console.log("this is the cart=>", cart);
+}
+
+// Exercise 7
+function applyPromotionsCart() {
+  // Apply promotions to each item in the array "cart"
+  for (let i = 0; i < cart.length; i++) {
+    cart[i].subtotal = cart[i].quantity * cart[i].price;
+    if (cart[i].name === "cooking oil" && cart[i].quantity >=3) {
+      cart[i].subtotalWithDiscount = cart[i].quantity * (cart[i].price - 0.5);
+    } else if (cart[i].name === "Instant cupcake mixture" && cart[i].quantity >=10) {
+      cart[i].subtotalWithDiscount = Math.round(
+        (cart[i].quantity * cart[i].price * 2) / 3
       );
     }
-  
-    console.log("subtotal with discount =>", subtotal);
-    return subtotal;
+  }
+  return cart;
+}
+
+// Exercise 8
+function addToCart(id) {
+  // 1. Loop for to the array products to get the item to add to cart
+  let cartItem = {}
+  let selectedItem;
+  let index;
+
+  for (let i=0; i<products.length; i++){
+    if (i +1 === id) {
+      selectedItem = products[i];
+    }
+  }
+
+  if(cart.some(item => selectedItem.name === item.name)){
+    index = cart.findIndex((item) => item.name === selectedItem.name);
+    cart[index].quantity = cart[index].quantity + 1;
+    cart[index].subtotal = cart[index].price *cart[index].quantity; 
+    
+    if(cart[index].name === 'cooking oil'){
+      if(cart[index].quantity >= 3){
+        cart[index].subtotalWithDiscount = cart[index].quantity * (cart[index].price - 0.5);
+      } 
+    } else if (cart[index].name === 'Instant cupcake mixture'){
+      if(cart[index].quantity >= 10){
+        cart[index].subtotalWithDiscount = Math.round(
+          (cart[index].quantity * cart[index].price * 2) / 3
+        );
+      }
+    } 
+  } else {
+    cartItem = {
+      ...selectedItem,
+      quantity: 1,
+      subtotal: selectedItem.price,
+    }
+    cart.push(cartItem)
   }
   
-  // Exercise 6
-  function generateCart() {
-    let cartItem = {
-        name: '',
-        price: 0,
-        type: '',
-        quantity: 0,
+}
+
+// Exercise 9
+function removeFromCart(id) {
+  let selectedItem;
+  // 1. Loop for to the array products to get the item to add to cart
+  for (let i=0; i<cart.length; i++){
+    if (i+1 === id) {
+      selectedItem = cart[i];
     }
-    let counter = 0;
-    //iterar array cartList
-    for (let i=0; i<cartList.length; i++){
-      //transformem cartList[i] en cartItem, que actualitza el primer cartItem.
-      cartItem = {
-          ...cartItem,
-          name: cartList[i].name,
-          price: cartList[i].price,
-          type: cartList[i].type,
-          quantity: counter,
-      }  
-      debugger;
-      if (cart.some((item) => item.name === cartItem.name)){
-          //increment quantity by 1
-          cartItem={
-              ...cartItem,
-              quantity: counter + 1,
-          }
-          debugger;
-         //find index of cartItem in cart
-         const index = cart.findIndex((item) => item.name === cartItem.name)
-         //replace cartItem with splice
-         debugger;
-          cart.splice(index,1,cartItem)
-          
-          console.log(cart)
-    } else {
-        //afegim el cartItem a l'Array cart
-        cartItem={
-            ...cartItem,
-            quantity: 1,
+  }
+
+if(cart.some(item => selectedItem.name === item.name)){
+  if(selectedItem.quantity > 1){
+    if (selectedItem.name === 'cooking oil'){
+      if (selectedItem.quantity === 3){
+        selectedItem.quantity = selectedItem.quantity -1;
+        delete selectedItem.subtotalWithDiscount;}
+        else{
+          selectedItem.quantity = selectedItem.quantity -1
         }
-        cart.push(cartItem)
-        console.log("afegit")
+    }else{
+      if (selectedItem.name === 'Instant cupcake mixture'){
+        if (selectedItem.quantity === 10){
+          selectedItem.quantity = selectedItem.quantity -1;
+        delete selectedItem.subtotalWithDiscount;
+        }else{selectedItem.quantity = selectedItem.quantity -1}
+      }else{selectedItem.quantity = selectedItem.quantity -1}
     }
-     
-    }
-    console.log("cart=>", cart);
-    //Si cartList[0] existeix a cart, incrementem el camp quantity
-    //Si cartList[0] no existeix a cart, l'agreguem a cart - pero primer fem update quantity:1
-       
-  }
-  
-  // Exercise 7
-  function applyPromotionsCart() {
-    // Apply promotions to each item in the array "cart"
-  }
-  
-  // Exercise 8
-  function addToCart(id) {
-    // 1. Loop for to the array products to get the item to add to cart
-    // 2. Add found product to the cartList array
-  }
-  
-  // Exercise 9
-  function removeFromCart(id) {
-    // 1. Loop for to the array products to get the item to add to cart
-    // 2. Add found product to the cartList array
-  }
-  
-  // Exercise 10
-  function printCart() {
-    // Fill the shopping cart modal manipulating the shopping cart dom
-  }
+  }else{cart.filter(items => items.name !== selectedItem.name)}
+}
+console.log("cart>=", cart)
+}
+
+//problemas - 
+//al disminuir la cantidad, el subtotal no se actualiza
+//al eliminar un elemento único, no se queda vacío el carrito
+
+// Exercise 10
+function printCart() {
+  // Fill the shopping cart modal manipulating the shopping cart dom
+}

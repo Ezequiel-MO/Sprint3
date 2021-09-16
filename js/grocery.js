@@ -252,6 +252,36 @@ function addToCart(id) {
 
 // Exercise 9
 
+const deleteSubtotalWithDiscountProperty = selectedItem => delete selectedItem.subtotalWithDiscount
+
+
+  
+  const checkIfDiscountsApplyAndUpdate = selectedItem => {
+    const isCookingOil = selectedItem.name === "cooking oil"
+    const isInstantCupcakeMixture = selectedItem.name === "Instant cupcake mixture"
+    const LessThan3Units = selectedItem.quantity < 3
+    const LessThan10Units = selectedItem.quantity < 10
+  if (isCookingOil) {
+        if (LessThan3Units) {
+          deleteSubtotalWithDiscountProperty(selectedItem)
+        } else {
+          selectedItem.subtotalWithDiscount =
+            selectedItem.quantity * (selectedItem.price - 0.5);
+        }
+      } else {
+        if (isInstantCupcakeMixture) {
+          if (LessThan10Units) {
+            deleteSubtotalWithDiscountProperty(selectedItem)
+          } else {
+            selectedItem.subtotalWithDiscount = Math.round(
+              (selectedItem.quantity * selectedItem.price * 2) / 3
+            );
+          }
+        }
+      }
+    }
+
+
 const updateQuantityAndSubtotal= (selectedItem) =>{
   selectedItem.quantity = selectedItem.quantity -1 ;
   selectedItem.subtotal = selectedItem.quantity * selectedItem.price;
@@ -285,25 +315,8 @@ function removeFromCart(id) {
 
     if (moreThanOneSelectedItemInCart) {
       updateQuantityAndSubtotal(selectedItem)
+      checkIfDiscountsApplyAndUpdate(selectedItem)
       
-      if (selectedItem.name === "cooking oil") {
-        if (selectedItem.quantity < 3) {
-          delete selectedItem.subtotalWithDiscount;
-        } else {
-          selectedItem.subtotalWithDiscount =
-            selectedItem.quantity * (selectedItem.price - 0.5);
-        }
-      } else {
-        if (selectedItem.name === "Instant cupcake mixture") {
-          if (selectedItem.quantity < 10) {
-            delete selectedItem.subtotalWithDiscount;
-          } else {
-            selectedItem.subtotalWithDiscount = Math.round(
-              (selectedItem.quantity * selectedItem.price * 2) / 3
-            );
-          }
-        }
-      }
     } else {
       const position = findPositionInCartItemToRemove(selectedItem)
       removeSelectedItemfromCart(position)

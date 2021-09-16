@@ -252,6 +252,12 @@ function addToCart(id) {
 
 // Exercise 9
 
+const updateQuantityAndSubtotal= (selectedItem) =>{
+  selectedItem.quantity = selectedItem.quantity -1 ;
+  selectedItem.subtotal = selectedItem.quantity * selectedItem.price;
+}
+
+
 const findPositionInCartItemToRemove = selectedItem =>  cart.findIndex((item) => item.name === selectedItem.name);
  
 const removeSelectedItemfromCart = position => {
@@ -273,11 +279,13 @@ const findSelectedItem = id => {
 
 function removeFromCart(id) {
   const selectedItem = findSelectedItem(id)
+  const moreThanOneSelectedItemInCart =  selectedItem.quantity > 1
 
   if (isSelectedItemInCart(selectedItem)) {
-    if (selectedItem.quantity > 1) {
-      selectedItem.quantity = selectedItem.quantity - 1;
-      selectedItem.subtotal = selectedItem.quantity * selectedItem.price;
+
+    if (moreThanOneSelectedItemInCart) {
+      updateQuantityAndSubtotal(selectedItem)
+      
       if (selectedItem.name === "cooking oil") {
         if (selectedItem.quantity < 3) {
           delete selectedItem.subtotalWithDiscount;

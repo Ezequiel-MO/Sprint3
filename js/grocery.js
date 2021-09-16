@@ -251,6 +251,8 @@ function addToCart(id) {
 }
 
 // Exercise 9
+const isSelectedItemInCart = selectedItem => cart.some((item) => selectedItem.name === item.name)
+
 const findSelectedItem = id => {
   let selectedItem;
   for (let i=0; i<cart.length; i++){
@@ -263,11 +265,10 @@ const findSelectedItem = id => {
 
 
 function removeFromCart(id) {
-  const selectedItem = findSelectedItem(id)
   let index;
+  const selectedItem = findSelectedItem(id)
 
-  
-  if (cart.some((item) => selectedItem.name === item.name)) {
+  if (  isSelectedItemInCart(selectedItem)) {
     if (selectedItem.quantity > 1) {
       selectedItem.quantity = selectedItem.quantity - 1;
       selectedItem.subtotal = selectedItem.quantity * selectedItem.price;

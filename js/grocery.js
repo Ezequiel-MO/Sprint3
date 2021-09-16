@@ -263,14 +263,10 @@ const findSelectedItem = id => {
 
 
 function removeFromCart(id) {
-  let selectedItem;
+  const selectedItem = findSelectedItem(id)
   let index;
-  // 1. Loop for to the array products to get the item to add to cart
-  for (let i = 0; i < cart.length; i++) {
-    if (i + 1 === id) {
-      selectedItem = cart[i];
-    }
-  }
+
+  
   if (cart.some((item) => selectedItem.name === item.name)) {
     if (selectedItem.quantity > 1) {
       selectedItem.quantity = selectedItem.quantity - 1;

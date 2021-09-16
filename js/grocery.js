@@ -251,35 +251,56 @@ function addToCart(id) {
 }
 
 // Exercise 9
-function removeFromCart(id) {
+const findSelectedItem = id => {
   let selectedItem;
-  // 1. Loop for to the array products to get the item to add to cart
   for (let i=0; i<cart.length; i++){
     if (i+1 === id) {
       selectedItem = cart[i];
     }
   }
-
-if(cart.some(item => selectedItem.name === item.name)){
-  if(selectedItem.quantity > 1){
-    if (selectedItem.name === 'cooking oil'){
-      if (selectedItem.quantity === 3){
-        selectedItem.quantity = selectedItem.quantity -1;
-        delete selectedItem.subtotalWithDiscount;}
-        else{
-          selectedItem.quantity = selectedItem.quantity -1
-        }
-    }else{
-      if (selectedItem.name === 'Instant cupcake mixture'){
-        if (selectedItem.quantity === 10){
-          selectedItem.quantity = selectedItem.quantity -1;
-        delete selectedItem.subtotalWithDiscount;
-        }else{selectedItem.quantity = selectedItem.quantity -1}
-      }else{selectedItem.quantity = selectedItem.quantity -1}
-    }
-  }else{cart.filter(items => items.name !== selectedItem.name)}
+  return selectedItem;
 }
-console.log("cart>=", cart)
+
+
+function removeFromCart(id) {
+  let selectedItem;
+  let index;
+  // 1. Loop for to the array products to get the item to add to cart
+  for (let i = 0; i < cart.length; i++) {
+    if (i + 1 === id) {
+      selectedItem = cart[i];
+    }
+  }
+  if (cart.some((item) => selectedItem.name === item.name)) {
+    if (selectedItem.quantity > 1) {
+      selectedItem.quantity = selectedItem.quantity - 1;
+      selectedItem.subtotal = selectedItem.quantity * selectedItem.price;
+      if (selectedItem.name === "cooking oil") {
+        if (selectedItem.quantity < 3) {
+          delete selectedItem.subtotalWithDiscount;
+        } else {
+          selectedItem.subtotalWithDiscount =
+            selectedItem.quantity * (selectedItem.price - 0.5);
+        }
+      } else {
+        if (selectedItem.name === "Instant cupcake mixture") {
+          if (selectedItem.quantity < 10) {
+            delete selectedItem.subtotalWithDiscount;
+          } else {
+            selectedItem.subtotalWithDiscount = Math.round(
+              (selectedItem.quantity * selectedItem.price * 2) / 3
+            );
+          }
+        }
+      }
+    } else {
+      index = cart.findIndex((item) => item.name === selectedItem.name);
+      if (index > -1) {
+        cart.splice(index, 1);
+      }
+    }
+  }
+  console.log("cart>=", cart);
 }
 
 //problemas - 

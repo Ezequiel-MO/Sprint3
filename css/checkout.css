@@ -3,6 +3,7 @@
 body {
     font-family: Poppins;
 }
-#errorPassword, #errorName, #errorPhone {
+
+.error {
     display: none;
 }

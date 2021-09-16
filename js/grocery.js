@@ -251,6 +251,13 @@ function addToCart(id) {
 }
 
 // Exercise 9
+
+const findPositionInCartItemToRemove = selectedItem =>  cart.findIndex((item) => item.name === selectedItem.name);
+ 
+const removeSelectedItemfromCart = position => {
+  cart.splice(position, 1);
+}
+
 const isSelectedItemInCart = selectedItem => cart.some((item) => selectedItem.name === item.name)
 
 const findSelectedItem = id => {
@@ -265,10 +272,9 @@ const findSelectedItem = id => {
 
 
 function removeFromCart(id) {
-  let index;
   const selectedItem = findSelectedItem(id)
 
-  if (  isSelectedItemInCart(selectedItem)) {
+  if (isSelectedItemInCart(selectedItem)) {
     if (selectedItem.quantity > 1) {
       selectedItem.quantity = selectedItem.quantity - 1;
       selectedItem.subtotal = selectedItem.quantity * selectedItem.price;
@@ -291,10 +297,8 @@ function removeFromCart(id) {
         }
       }
     } else {
-      index = cart.findIndex((item) => item.name === selectedItem.name);
-      if (index > -1) {
-        cart.splice(index, 1);
-      }
+      const position = findPositionInCartItemToRemove(selectedItem)
+      removeSelectedItemfromCart(position)
     }
   }
   console.log("cart>=", cart);

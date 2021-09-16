@@ -19,7 +19,9 @@ var errorsGeneral = document.querySelectorAll(".error");
 
 function validate() {
   // Validate fields entered by the user: name, phone, password, and email
-  for (let i = 0; i < allInputs.length; i++) {
+
+  console.log("submitted")
+  /* for (let i = 0; i < allInputs.length; i++) {
     if (allInputs[i].value.trim().length < 3) {
       allInputs[i].classList.add("border-danger");
       errorsGeneral[i].innerHTML =
@@ -32,5 +34,5 @@ function validate() {
       errorsGeneral[i].innerHTML = "All fields are mandatory";
       errorsGeneral[i].style.display = "block";
     }
-  }
+  } */
 }

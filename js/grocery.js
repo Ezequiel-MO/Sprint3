@@ -252,31 +252,34 @@ function addToCart(id) {
 
 // Exercise 9
 
-const deleteSubtotalWithDiscountProperty = selectedItem => delete selectedItem.subtotalWithDiscount
+const updateSubtotalWithDiscount = (selectedItem, isCookingOil, isInstantCupcakeMixture) => {
+  if (isCookingOil)selectedItem.subtotalWithDiscount =
+  selectedItem.quantity * (selectedItem.price - 0.5);
 
+  if (isInstantCupcakeMixture)selectedItem.subtotalWithDiscount = Math.round(
+    (selectedItem.quantity * selectedItem.price * 2) / 3
+  )
+  
+}
 
+const deleteSubtotalWithDiscount = selectedItem => delete selectedItem.subtotalWithDiscount
   
   const checkIfDiscountsApplyAndUpdate = selectedItem => {
     const isCookingOil = selectedItem.name === "cooking oil"
     const isInstantCupcakeMixture = selectedItem.name === "Instant cupcake mixture"
     const LessThan3Units = selectedItem.quantity < 3
     const LessThan10Units = selectedItem.quantity < 10
-  if (isCookingOil) {
-        if (LessThan3Units) {
-          deleteSubtotalWithDiscountProperty(selectedItem)
-        } else {
-          selectedItem.subtotalWithDiscount =
-            selectedItem.quantity * (selectedItem.price - 0.5);
-        }
-      } else {
-        if (isInstantCupcakeMixture) {
-          if (LessThan10Units) {
-            deleteSubtotalWithDiscountProperty(selectedItem)
-          } else {
-            selectedItem.subtotalWithDiscount = Math.round(
-              (selectedItem.quantity * selectedItem.price * 2) / 3
-            );
-          }
+  if (isCookingOil) 
+      {
+        if (LessThan3Units) deleteSubtotalWithDiscount(selectedItem)
+        else updateSubtotalWithDiscount(selectedItem, isCookingOil)
+      } 
+    else 
+      {
+  if (isInstantCupcakeMixture) 
+    {
+        if (LessThan10Units) deleteSubtotalWithDiscount(selectedItem)
+        else updateSubtotalWithDiscount(selectedItem, isInstantCupcakeMixture)
         }
       }
     }
@@ -325,9 +328,6 @@ function removeFromCart(id) {
   console.log("cart>=", cart);
 }
 
-//problemas - 
-//al disminuir la cantidad, el subtotal no se actualiza
-//al eliminar un elemento único, no se queda vacío el carrito
 
 // Exercise 10
 function printCart() {

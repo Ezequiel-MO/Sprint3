@@ -3,7 +3,19 @@
 body {
     font-family: Poppins;
 }
+.invalid {
+    border: 2px solid red;
+}
 
-.error {
+.valid{
+    border: 2px solid green;
+}
+
+.hidden{
     display: none;
 }
+
+.visible{
+    display: block;
+}
+

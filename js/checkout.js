@@ -9,13 +9,6 @@ const lastName = document.getElementById("last-name");
 const password = document.getElementById("password");
 const phoneNumber = document.getElementById("phone-number");
 
-//Tots els camps són obligatoris.
-//Tots els camps han de tenir almenys 3 caràcters.
-//El nom i cognoms han de contenir només lletres.
-//El telèfon ha de contenir només números.
-//La contrasenya ha d'incloure números i lletres.
-//L'email ha de tenir format d'email.
-
 const displayMessage = (input, message) => {
   const smallPrint = input.parentElement.querySelector("p");
   smallPrint.classList.replace("hidden", "visible");
@@ -34,6 +27,7 @@ const redBorder = (input) => {
   }
   input.classList.add("invalid");
 };
+
 const greenBorder = (input) => {
   if (input.classList.contains("invalid")) {
     input.classList.remove("invalid");
@@ -45,87 +39,123 @@ const showError = (input, message) => {
   displayMessage(input, message);
   redBorder(input);
 };
+
 const showSuccess = (input) => {
   hideMessage(input);
   greenBorder(input);
 };
 
-const checkPasswordContainsOnlyNumbersAndLetters = () => {
+const containsOtherThanNumbers = (input) => {
+  const re = /^[0-9]+$/;
+  const wrongPhoneFormat = !re.test(input.value);
+  if (wrongPhoneFormat) {
+    return true;
+  } else return false;
+};
+
+const containsOtherThanNumbersAndLetters = (input) => {
   const re = /^[a-z0-9]+$/;
-  const passwordContainsOnlyNumbersAndLetters = re.test(password.value);
-  if (passwordContainsOnlyNumbersAndLetters) {
-    showSuccess(password);
-  } else {
-    showError(password, "Password must contain both letters and numbers");
-  }
+  const wrongPassword = !re.test(input.value);
+  if (wrongPassword) {
+    return true;
+  } else return false;
 };
 
-const checkPhoneContainsOnlyNumbers = () => {
-  const re = /^\d+$/;
-  const phoneContainsOnlyNumbers = re.test(phoneNumber.value);
-  if (phoneContainsOnlyNumbers) {
-    showSuccess(phoneNumber);
-  } else {
-    showError(phoneNumber, "Phone number must only contain numbers");
-  }
-};
-
-const checkFirstAndLastNameContainOnlyLetters = () => {
-  const re = /^[a-zA-Z]+$/;
-  const firstNameContainsOnlyLetters = re.test(firstName.value);
-  const lastNameContainsOnlyLetters = re.test(lastName.value);
-  if (firstNameContainsOnlyLetters) {
-    showSuccess(firstName);
-  } else {
-    showError(firstName, "Your Name must contain only letters");
-  }
-
-  if (lastNameContainsOnlyLetters) {
-    showSuccess(lastName);
-  } else {
-    showError(lastName, "Your Name must contain only letters");
-  }
-};
-
-const checkInputLength = (input) => {
-  const tooShort = input.value.length < 3;
-  if (tooShort) {
-    showError(input, `${input.placeholder} must be at least 3 characters`);
-  } else showSuccess(input);
-};
-
-const checkAllFieldsAtLeast3characters = () => {
-  for (let i = 0; i < allInputs.length; i++) {
-    checkInputLength(allInputs[i]);
-  }
-};
-
-const validateEmail = () => {
+const emailWrongFormat = (input) => {
   const re =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  const isValid = re.test(email.value);
-  if (isValid) {
-    showSuccess(email);
-  } else {
-    showError(email, "Format not valid");
-  }
+  const nonValid = !re.test(email.value);
+  if (nonValid) {
+    return true;
+  } else return false;
 };
 
-const checkAllFieldsAreNotEmpty = () => {
-  for (let i = 0; i < allInputs.length; i++) {
-    if (allInputs[i].value === "") {
-      showError(allInputs[i], `${allInputs[i].placeholder} can not be empty`);
-    } else showSuccess(allInputs[i]);
-  }
+const containsOtherThanLetters = (input) => {
+  const re = /^[a-zA-Z]+$/;
+  const OnlyLetters = re.test(input.value);
+  if (!OnlyLetters) {
+    return true;
+  } else return false;
+};
+
+const tooShort = (input) => {
+  const tooShort = input.value.length < 3;
+  if (tooShort) {
+    return true;
+  } else return false;
+};
+
+const emptyField = (input) => {
+  if (input.value === "") {
+    return true;
+  } else return false;
+};
+
+const phoneNumberValid = () => {
+  if (emptyField(phoneNumber)) {
+    showError(phoneNumber, "Phone Number is required");
+  } else if (tooShort(phoneNumber)) {
+    showError(phoneNumber, "Phone number need to be at least 3 numbers");
+  } else if (containsOtherThanNumbers(phoneNumber)) {
+    showError(phoneNumber, "Must contain only numbers");
+  } else showSuccess(phoneNumber);
+};
+
+const passwordValid = () => {
+  if (emptyField(password)) {
+    showError(password, "Password is required");
+  } else if (tooShort(password)) {
+    showError(password, "Password need to be at least 3 characters");
+  } else if (containsOtherThanNumbersAndLetters(password)) {
+    showError(password, "Password can only contain numbers and letters");
+  } else showSuccess(password);
+};
+
+const emailValid = () => {
+  if (emptyField(email)) {
+    showError(email, "Email is required");
+  } else if (tooShort(email)) {
+    showError(email, "Must contain at least 3 characters");
+  } else if (emailWrongFormat(email)) {
+    showError(email, "Email is in wrong format");
+  } else showSuccess(email);
+};
+
+const addressValid = () => {
+  if (emptyField(address)) {
+    showError(address, "Address is required");
+  } else if (tooShort(address)) {
+    showError(address, "Must contain at least 3 characters");
+  } else showSuccess(address);
+};
+
+const lastNameValid = () => {
+  if (emptyField(lastName)) {
+    showError(lastName, "Last Name is required");
+  } else if (tooShort(lastName)) {
+    showError(lastName, "Must contain at least 3 letters");
+  } else if (containsOtherThanLetters(firstName)) {
+    showError(lastName, "Can only be letters");
+  } else showSuccess(lastName);
+};
+
+const firstNameValid = () => {
+  if (emptyField(firstName)) {
+    showError(firstName, "First Name is required");
+  } else if (tooShort(firstName)) {
+    showError(firstName, "Must contain at least 3 letters");
+  } else if (containsOtherThanLetters(firstName)) {
+    showError(firstName, "Can only be letters");
+  } else showSuccess(firstName);
 };
 
 function validate() {
-  checkAllFieldsAreNotEmpty();
-  validateEmail();
-  checkAllFieldsAtLeast3characters();
-  checkFirstAndLastNameContainOnlyLetters();
-  checkPhoneContainsOnlyNumbers();
-  checkPasswordContainsOnlyNumbersAndLetters();
+  firstNameValid();
+  lastNameValid();
+  emailValid();
+  passwordValid();
+  addressValid();
+  phoneNumberValid();
 }
 
 form.addEventListener("submit", function (e) {

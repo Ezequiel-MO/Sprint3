@@ -134,7 +134,7 @@ const lastNameValid = () => {
     showError(lastName, "Last Name is required");
   } else if (tooShort(lastName)) {
     showError(lastName, "Must contain at least 3 letters");
-  } else if (containsOtherThanLetters(firstName)) {
+  } else if (containsOtherThanLetters(lastName)) {
     showError(lastName, "Can only be letters");
   } else showSuccess(lastName);
 };

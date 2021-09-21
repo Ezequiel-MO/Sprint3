@@ -326,8 +326,10 @@ const findSelectedItem = (id) => {
 
 function removeFromCart(id) {
   const selectedItem = findSelectedItem(id);
+  if (selectedItem.quantity === undefined) return;
+  if (!isSelectedItemInCart(selectedItem)) return;
   const moreThanOneSelectedItemInCart = selectedItem.quantity > 1;
-
+  
   if (isSelectedItemInCart(selectedItem)) {
     if (moreThanOneSelectedItemInCart) {
       updateQuantityAndSubtotal(selectedItem);
@@ -346,9 +348,14 @@ function printCart() {
   // Fill the shopping cart modal manipulating the shopping cart dom
   const cartNode = document.getElementById("cart-modal");
   cartNode.textContent = "";
-  cart.forEach((cartItem) => {
+  cart.forEach((cartItem, index) => {
     const div = document.createElement("div");
-    div.innerHTML = `<h4>${cartItem.name} ${cartItem.quantity}</h4>`;
+    div.innerHTML = `
+    <div class="row ml-3">
+      <h4 >${cartItem.name} ${cartItem.quantity}</h4>
+      <button type="button" onclick="removeFromCart(${index+1})" class="btn btn-primary">Remove from cart</button>
+    </div>
+    `;
     cartNode.appendChild(div);
   });
 }

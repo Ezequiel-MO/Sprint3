@@ -76,7 +76,7 @@
           <button type="button" onclick="calculateSubtotals()" class="btn btn-primary">Subtotals</button>
           <button type="button" onclick="calculateTotal()" class="btn btn-primary">Total</button>
           <button type="button" onclick="generateCart()" class="btn btn-primary">Generate</button>
-          <button type="button" onclick="removeFromCart(1)" class="btn btn-primary">Remove from cart</button>
+          <button type="button" onclick="removeFromCart(2)" class="btn btn-primary">Remove from cart</button>
         </div>
       </div>
     </div>
@@ -170,7 +170,8 @@
 
               </ul>
               <div>
-                <h3 class="text-center bill px-5">Select Something</h3>
+                <h4 class="text-center bill px-5" >In your cart</h4>
+                <div id="cart-modal"></div>
               </div>
               <div class="text-center"> 
                 <a href="checkout.html" class="btn btn-primary m-3">Checkout</a>

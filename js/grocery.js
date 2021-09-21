@@ -251,6 +251,7 @@ function addToCart(id) {
     };
     cart.push(cartItem);
   }
+  printCart();
 }
 
 // Exercise 9
@@ -337,13 +338,17 @@ function removeFromCart(id) {
     }
   }
   console.log("cart>=", cart);
+  printCart();
 }
-
-//problemas -
-//al disminuir la cantidad, el subtotal no se actualiza
-//al eliminar un elemento único, no se queda vacío el carrito
 
 // Exercise 10
 function printCart() {
   // Fill the shopping cart modal manipulating the shopping cart dom
+  const cartNode = document.getElementById("cart-modal");
+  cartNode.textContent = "";
+  cart.forEach((cartItem) => {
+    const div = document.createElement("div");
+    div.innerHTML = `<h4>${cartItem.name} ${cartItem.quantity}</h4>`;
+    cartNode.appendChild(div);
+  });
 }

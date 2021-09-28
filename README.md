@@ -1,5 +1,9 @@
 # Sprint 3 IT Academy | Shop
 
+## Comentaris
+
+En aquest Sprint, només he completat els Nivells 1 i 2. La branca Nivell2Solution conté tot el codi. Recomano clonar-se especificament aquesta branca.
+
 ## Introduction
 
 A company in the e-commerce sector has asked us for a web application that allows them to offer the purchase of their products through the internet.
